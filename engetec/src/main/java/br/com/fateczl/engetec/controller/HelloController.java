@@ -1,9 +1,10 @@
-package br.com.fateczl.engetec.web;
+package br.com.fateczl.engetec.controller;
 
-import br.com.fateczl.engetec.dto.HelloDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import br.com.fateczl.engetec.entity.HelloDTO;
 
 @RestController
 @RequestMapping("/api")

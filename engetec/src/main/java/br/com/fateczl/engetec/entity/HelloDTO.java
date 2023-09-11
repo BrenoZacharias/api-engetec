@@ -1,4 +1,4 @@
-package br.com.fateczl.engetec.dto;
+package br.com.fateczl.engetec.entity;
 
 public class HelloDTO {
 

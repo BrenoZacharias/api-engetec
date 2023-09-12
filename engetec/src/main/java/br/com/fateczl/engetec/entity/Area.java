@@ -2,6 +2,7 @@ package br.com.fateczl.engetec.entity;
 
 import java.util.List;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +11,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @Entity
 public class Area {
 	@Id
@@ -27,4 +32,9 @@ public class Area {
 		inverseJoinColumns = @JoinColumn(name = "avaliador_matricula")
 	)
 	private List<Avaliador> avaliadores;
+	
+	@Override
+	public String toString() {
+		return "" +id +""+nome;
+	}
 }

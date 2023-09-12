@@ -13,9 +13,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import org.springframework.web.servlet.support.BindStatus;
-
+@Data
+@NoArgsConstructor
 @Entity
 public class Artigo {
 	@Id

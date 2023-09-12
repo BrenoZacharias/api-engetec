@@ -21,8 +21,8 @@ public class AreaController {
 	private AreaRepository areaRepository;
 	
 	@GetMapping("/area")
-	public List<Area> buscarAreas(){
-		return areaRepository.findAll();
+	public ResponseEntity<List<Area>> buscarAreas(){
+		return ResponseEntity.ok(areaRepository.findAll());
 	}
 	
 	@PostMapping("/area")
@@ -30,4 +30,9 @@ public class AreaController {
 		System.out.println(area.toString());
 		return ResponseEntity.ok(areaRepository.save(area));
 	}
+	/*
+	@PostMapping("/area")
+	public void criarArea(@RequestBody String area) {
+		System.out.println(area.toString());
+	}*/
 }

@@ -21,7 +21,7 @@ public class AlunoController {
 		return "ola";
 	}
 	
-	@PostMapping
+	@PostMapping(path = "/aluno")
 	public Aluno criarAluno(@RequestBody Aluno aluno) {
 		return alunoRepository.save(aluno);
 	}

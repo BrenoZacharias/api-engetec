@@ -6,22 +6,64 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
 @Entity
 public class Aluno {
 	@Id
 	private Long ra;
 	@OneToMany
-	private List<Artigo> artigos;	
+	private List<Artigo> artigos;
 	@Column(unique = true, nullable = false)
 	private String email;
 	@Column(nullable = false)
 	private String nome;
 	@Column(nullable = false)
 	private String senha;
-}
 
+	public Long getRa() {
+		return ra;
+	}
+
+	public void setRa(Long ra) {
+		this.ra = ra;
+	}
+
+	public List<Artigo> getArtigos() {
+		return artigos;
+	}
+
+	public void setArtigos(List<Artigo> artigos) {
+		this.artigos = artigos;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	@Override
+	public String toString() {
+		return "Aluno [ra=" + ra + ", artigos=" + artigos + ", email=" + email + ", nome=" + nome + ", senha=" + senha
+				+ "]";
+	}
+
+}

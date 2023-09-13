@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fateczl.engetec.entity.Area;
@@ -15,17 +16,18 @@ import br.com.fateczl.engetec.repository.AreaRepository;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api")
 public class AreaController {
 	@Autowired
 	private AreaRepository areaRepository;
 	
 	@GetMapping("/area")
-	public ResponseEntity<List<Area>> buscarAreas(){
+	public ResponseEntity<Iterable<Area>> buscarAreas(){
 		return ResponseEntity.ok(areaRepository.findAll());
 	}
 	
 	@PostMapping("/area")
+	@ResponseBody
 	public ResponseEntity<Area> criarArea(@RequestBody Area area) {
 		System.out.println(area.toString());
 		return ResponseEntity.ok(areaRepository.save(area));

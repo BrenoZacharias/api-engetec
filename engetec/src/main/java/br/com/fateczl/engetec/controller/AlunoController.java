@@ -1,7 +1,8 @@
 package br.com.fateczl.engetec.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fateczl.engetec.entity.Aluno;
-import br.com.fateczl.engetec.entity.AlunoModel;
 import br.com.fateczl.engetec.repository.AlunoRepository;
 
 @RestController
@@ -19,9 +19,14 @@ public class AlunoController {
 	@Autowired
 	private AlunoRepository alunoRepository;
 	
-	@GetMapping(path = "/aluno/{nome}")
-	public String getAluno(@PathVariable String nome) {
-		return "ola " + nome;
+	@GetMapping(path = "/aluno")
+	public List<Aluno> buscarAlunos() {
+		return alunoRepository.findAll();
+	}
+	
+	@GetMapping(path = "/aluno/{ra}")
+	public Aluno buscarAluno(@PathVariable Long ra) {
+		return alunoRepository.findByRa(ra);
 	}
 	
 	@PostMapping(path = "/aluno")

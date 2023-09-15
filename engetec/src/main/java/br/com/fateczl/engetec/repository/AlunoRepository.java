@@ -12,4 +12,18 @@ public interface AlunoRepository extends CrudRepository<Aluno, Long>{
 	
 	Aluno findByRa(Long ra);
 	
+	List<Aluno> findByOrderByNomeAsc();
+	
+	List<Aluno> findByOrderByNomeDesc();
+	
+	List<Aluno> findByNome(String nome);
+	
+	List<Aluno> findByNomeOrderByRaDesc(String nome);
+	
+	List<Aluno> findByNomeContaining(String termo);
+	
+	List<Aluno> findByNomeStartsWith(String termo);
+	
+	List<Aluno> findByNomeEndsWith(String termo);
+	
 }

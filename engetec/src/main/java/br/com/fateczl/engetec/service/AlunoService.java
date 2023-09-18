@@ -39,9 +39,12 @@ public class AlunoService {
 	
 	//Método para selecionar pessoas através do código
 	public ResponseEntity<?> selecionarPeloRa(Long ra) {
+		
 		if(alunoRepository.countByRa(ra)==0) {
 			mensagem.setMensagem("Não foi econtrada nenhuma pessoa");
 			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<>(alunoRepository.findByRa(ra), HttpStatus.OK);
 		}
 	}
 }

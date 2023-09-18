@@ -34,8 +34,8 @@ public class AlunoController {
 	}
 	
 	@GetMapping(path = "/{ra}")
-	public Aluno selecionarPeloRa(@PathVariable Long ra) {
-		return alunoRepository.findByRa(ra);
+	public ResponseEntity<?> selecionarPeloRa(@PathVariable Long ra) {
+		return alunoService.selecionarPeloRa(ra);
 	}
 	
 	@GetMapping("/count")
@@ -90,8 +90,8 @@ public class AlunoController {
 	
 	@DeleteMapping(path = "/{ra}")
 	public void remover(@PathVariable Long ra) {
-		Aluno aluno = selecionarPeloRa(ra);
-		alunoRepository.delete(aluno);
+//		Aluno aluno = selecionarPeloRa(ra);
+//		alunoRepository.delete(aluno);
 	}
 
 	@GetMapping("/status")

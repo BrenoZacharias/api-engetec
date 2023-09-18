@@ -26,4 +26,6 @@ public interface AlunoRepository extends CrudRepository<Aluno, Long>{
 	
 	List<Aluno> findByNomeEndsWith(String termo);
 	
+	int countByRa(Long ra);
+	
 }

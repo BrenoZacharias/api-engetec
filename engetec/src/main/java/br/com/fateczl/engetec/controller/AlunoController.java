@@ -3,6 +3,9 @@ package br.com.fateczl.engetec.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fateczl.engetec.entity.Aluno;
 import br.com.fateczl.engetec.repository.AlunoRepository;
+import br.com.fateczl.engetec.service.AlunoService;
 
 @RestController
 @RequestMapping("/api/aluno")
@@ -21,9 +25,12 @@ public class AlunoController {
 	@Autowired
 	private AlunoRepository alunoRepository;
 	
+	@Autowired
+	private AlunoService alunoService;
+	
 	@GetMapping(path = "")
-	public List<Aluno> buscarAlunos() {
-		return alunoRepository.findAll();
+	public ResponseEntity<?> selecionar() {
+		return alunoService.selecionar();
 	}
 	
 	@GetMapping(path = "/{ra}")
@@ -72,8 +79,8 @@ public class AlunoController {
 	}
 	
 	@PostMapping(path = "")
-	public Aluno criar(@RequestBody Aluno aluno) {
-		return alunoRepository.save(aluno);
+	public ResponseEntity<?> cadastrar(@RequestBody Aluno aluno) {
+		return alunoService.cadastrar(aluno);
 	}
 	
 	@PutMapping(path = "")
@@ -86,14 +93,9 @@ public class AlunoController {
 		Aluno aluno = selecionarPeloRa(ra);
 		alunoRepository.delete(aluno);
 	}
-//	@PostMapping(path = "/aluno")
-//	public ResponseEntity<AlunoModel> criarAluno(@RequestBody AlunoModel alunoModel) {
-//		System.out.println(alunoModel.getEmail());
-//		return ResponseEntity.ok(alunoModel);
-//	}
-//	
-//	@PostMapping(path = "/aluno")
-//	public AlunoModel criarAluno(@RequestBody AlunoModel alunoModel) {
-//		return alunoModel;
-//	}
+
+	@GetMapping("/status")
+	public ResponseEntity<?> status() {
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
 }

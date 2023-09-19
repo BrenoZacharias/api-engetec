@@ -66,6 +66,22 @@ public class AlunoService {
 		
 	}
 	
+	// Método para remover registros
+		public ResponseEntity<?> remover(Long ra){
+			
+			if(alunoRepository.countByRa(ra) == 0) {
+				mensagem.setMensagem("O RA informado não existe.");
+				return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
+			}else {
+				Aluno aluno = alunoRepository.findByRa(ra);
+				alunoRepository.delete(aluno);
+				
+				mensagem.setMensagem("Pessoa removida com sucesso");
+				return new ResponseEntity<>(mensagem, HttpStatus.OK);
+			}
+			
+		}
+	
 	private boolean validaEmail(String email) {
 		boolean result = false;
 		if(email.contains("@") && (email.contains("."))) {

@@ -80,7 +80,7 @@ public class AlunoController {
 	}
 	
 	@PostMapping(path = "")
-	public ResponseEntity<?> cadastrar(@RequestBody Aluno aluno) {
+	public ResponseEntity<?> cadastrar(@Valid @RequestBody Aluno aluno) {
 		return alunoService.cadastrar(aluno);
 	}
 	
@@ -90,9 +90,8 @@ public class AlunoController {
 	}
 	
 	@DeleteMapping(path = "/{ra}")
-	public void remover(@PathVariable Long ra) {
-//		Aluno aluno = selecionarPeloRa(ra);
-//		alunoRepository.delete(aluno);
+	public ResponseEntity<?> remover(@PathVariable Long ra) {
+		return alunoService.remover(ra);
 	}
 
 	@GetMapping("/status")

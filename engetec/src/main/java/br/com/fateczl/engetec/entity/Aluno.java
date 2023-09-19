@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -19,8 +20,10 @@ public class Aluno {
 	@Email(message = "Informe um e-mail válido")
 	@Column(unique = true, nullable = false)
 	private String email;
+	@NotBlank(message = "Informe um nome válido")
 	@Column(nullable = false)
 	private String nome;
+	@NotBlank(message = "Informe uma senha válida")
 	@Column(nullable = false)
 	private String senha;
 

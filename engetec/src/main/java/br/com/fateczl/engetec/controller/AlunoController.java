@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fateczl.engetec.entity.Aluno;
 import br.com.fateczl.engetec.repository.AlunoRepository;
 import br.com.fateczl.engetec.service.AlunoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/aluno")
@@ -84,8 +85,8 @@ public class AlunoController {
 	}
 	
 	@PutMapping(path = "")
-	public Aluno editar(@RequestBody Aluno aluno) {
-		return alunoRepository.save(aluno);
+	public ResponseEntity<?> editar(@Valid @RequestBody Aluno aluno) {
+		return alunoService.editar(aluno);
 	}
 	
 	@DeleteMapping(path = "/{ra}")

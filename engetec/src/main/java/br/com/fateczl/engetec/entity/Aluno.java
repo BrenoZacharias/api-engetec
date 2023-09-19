@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -15,6 +16,7 @@ public class Aluno {
 	private Long ra;
 	@OneToMany
 	private List<Artigo> artigos;
+	@Email(message = "Informe um e-mail válido")
 	@Column(unique = true, nullable = false)
 	private String email;
 	@Column(nullable = false)

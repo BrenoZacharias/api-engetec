@@ -1,43 +1,65 @@
 package br.com.fateczl.engetec.senha;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import org.hibernate.annotations.GeneratorType;
 
+import br.com.fateczl.engetec.entity.Aluno;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+
+@Entity
 public class Senha {
-
-	private static final int SALT_LENGTH = 16;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(nullable = false)
+	private String hashedSenha;
+	@Column(nullable = false)
+	private byte[] salt;
+	@OneToOne
+	private Aluno aluno;
 	
-	// Gere um salt aleatório
-    public static byte[] generateSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[SALT_LENGTH];
-        random.nextBytes(salt);
-        return salt;
-    }
-    
- // Crie um hash SHA-256 para a senha com o salt fornecido
-	public static String hashPassword(String password, byte[] salt) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(salt);
-            byte[] hashedBytes = digest.digest(password.getBytes());
+	public Senha(String hashedSenha, byte[] salt) {
+		this.hashedSenha = hashedSenha;
+		this.salt = salt;
+	}
+	
+	public Senha() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Long getId() {
+		return id;
+	}
 
-            StringBuilder builder = new StringBuilder();
-            for (byte b : hashedBytes) {
-                builder.append(String.format("%02x", b));
-            }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-            return builder.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+	public Aluno getAluno() {
+		return aluno;
+	}
 
-    // Verifique se uma senha corresponde ao hash fornecido e ao salt
-    public static boolean verifyPassword(String password, String hashedPassword, byte[] salt) {
-        String hashedAttempt = hashPassword(password, salt);
-        return hashedAttempt.equals(hashedPassword);
-    }
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
+
+	public String getHashSenha() {
+		return hashedSenha;
+	}
+	public void setHashSenha(String hashedSenha) {
+		this.hashedSenha = hashedSenha;
+	}
+	public byte[] getSalt() {
+		return salt;
+	}
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
+	}
+	
+	
 }

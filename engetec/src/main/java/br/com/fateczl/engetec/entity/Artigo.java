@@ -26,6 +26,7 @@ public class Artigo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToOne
+	@JoinColumn(name = "aluno_ra", nullable = false)
 	private Aluno aluno;
 	@Column(unique = true, nullable = false)
 	private String titulo;

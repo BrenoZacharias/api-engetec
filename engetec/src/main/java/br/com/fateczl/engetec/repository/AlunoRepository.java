@@ -28,4 +28,6 @@ public interface AlunoRepository extends CrudRepository<Aluno, Long>{
 	
 	int countByRa(Long ra);
 	
+	int countByEmail(String email);
+	
 }

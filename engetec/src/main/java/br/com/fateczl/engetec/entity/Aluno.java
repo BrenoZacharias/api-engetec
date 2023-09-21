@@ -2,30 +2,41 @@ package br.com.fateczl.engetec.entity;
 
 import java.util.List;
 
+import br.com.fateczl.engetec.senha.Senha;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 public class Aluno {
+
 	@Id
 	private Long ra;
-	@OneToMany
+	@OneToMany(mappedBy = "aluno")
 	private List<Artigo> artigos;
-	@Email(message = "Informe um e-mail válido")
 	@Column(unique = true, nullable = false)
 	private String email;
-	@NotBlank(message = "Informe um nome válido")
 	@Column(nullable = false)
 	private String nome;
-	@NotBlank(message = "Informe uma senha válida")
-	@Column(nullable = false)
-	private String senha;
+	@PrimaryKeyJoinColumn
+	@OneToOne
+	private Senha senha;
+
+	public Aluno(Long ra, List<Artigo> artigos, String email, String nome, Senha senha) {
+		super();
+		this.ra = ra;
+		this.artigos = artigos;
+		this.email = email;
+		this.nome = nome;
+		this.senha = senha;
+	}
+	
+	public Aluno() {
+		super();
+	}
 
 	public Long getRa() {
 		return ra;
@@ -59,18 +70,12 @@ public class Aluno {
 		this.nome = nome;
 	}
 
-	public String getSenha() {
+	public Senha getSenha() {
 		return senha;
 	}
 
-	public void setSenha(String senha) {
+	public void setSenha(Senha senha) {
 		this.senha = senha;
-	}
-
-	@Override
-	public String toString() {
-		return "Aluno [ra=" + ra + ", artigos=" + artigos + ", email=" + email + ", nome=" + nome + ", senha=" + senha
-				+ "]";
 	}
 
 }

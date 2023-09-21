@@ -11,14 +11,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@Data
-@NoArgsConstructor
 @Entity
 public class Avaliador {
 	@Id
 	private Long matricula;
-	@OneToMany
+	@OneToMany(mappedBy = "avaliador")
 	private List<Avaliacao> avaliacoes;
 	@ManyToMany(mappedBy = "avaliadores")
 	private List<Area> areas;

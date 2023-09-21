@@ -4,6 +4,8 @@ import br.com.fateczl.engetec.entity.chaveCompostaAvaliacao.ChaveCompostaAvaliac
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +20,8 @@ public class Avaliacao {
 	private ChaveCompostaAvaliacao chaveCompostaAvaliacao;
 	@OneToOne
 	private Artigo artigo;
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name = "avaliador_matricula", nullable = false)
 	private Avaliador avaliador;
 	@Column(nullable = false)
 	private int nota; 

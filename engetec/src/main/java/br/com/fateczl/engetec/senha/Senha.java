@@ -5,9 +5,11 @@ import org.hibernate.annotations.GeneratorType;
 import br.com.fateczl.engetec.entity.Aluno;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -19,7 +21,7 @@ public class Senha {
 	private String hashedSenha;
 	@Column(nullable = false)
 	private byte[] salt;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "senha")
 	private Aluno aluno;
 	
 	public Senha(String hashedSenha, byte[] salt) {

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import br.com.fateczl.engetec.dto.AlunoDTO;
 import br.com.fateczl.engetec.entity.Aluno;
 import br.com.fateczl.engetec.entity.Artigo;
 import br.com.fateczl.engetec.entity.Mensagem;
+import br.com.fateczl.engetec.login.AlunoLogin;
 import br.com.fateczl.engetec.repository.AlunoRepository;
 import br.com.fateczl.engetec.repository.SenhaRepository;
 import br.com.fateczl.engetec.senha.HashSenha;
@@ -38,11 +40,27 @@ public class AlunoService {
 	@Autowired
 	private SenhaRepository senhaRepository;
 	
+	public ResponseEntity<?> logar(AlunoLogin alunoLogin){
+		if(alunoRepository.countByRa(alunoLogin.getRa())==0) {
+			mensagem.setMensagem("email não existe");
+			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
+		} else {
+			Aluno aluno = alunoRepository.findByRa(alunoLogin.getRa());
+			if(!HashSenha.verifyPassword(alunoLogin.getSenha(), aluno.getSenha().getHashSenha(), 
+					aluno.getSenha().getSalt())){
+				mensagem.setMensagem("senha incorreta");
+				return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
+			} else {
+				mensagem.setMensagem("logado");
+				return new ResponseEntity<>(mensagem, HttpStatus.OK);
+			}
+		}
+	}
+	
 	//Método para cadastrar alunos 
 	public ResponseEntity<?> cadastrar(AlunoDTO alunoDTO) {
 		Senha objSenha = tratamentoSenha(alunoDTO.getSenha());
 		Aluno aluno = AlunoDtoToAluno(alunoDTO, objSenha);
-		Senha senha = new Senha(aluno.getSenha().getHashSenha(), aluno.getSenha().getSalt());
 		if(aluno.getRa()==null){
 			mensagem.setMensagem("RA inválido");
 			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
@@ -80,10 +98,7 @@ public class AlunoService {
 		if(alunoRepository.countByRa(aluno.getRa()) == 0) {
 			mensagem.setMensagem("O RA informado não existe.");
 			return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
-		}/*else if(!validaEmail(aluno.getEmail())) {
-			mensagem.setMensagem("Email inválido");
-			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
-		}*/else {
+		}else {
 			return new ResponseEntity<>(alunoRepository.save(aluno), HttpStatus.OK);
 		}
 		
@@ -106,7 +121,6 @@ public class AlunoService {
 		}
 	
 	private Aluno AlunoDtoToAluno(AlunoDTO alunoDTO, Senha objSenha) {
-		objSenha.setAluno(null);
 		Aluno aluno = new Aluno(alunoDTO.getRa(), alunoDTO.getArtigos(), alunoDTO.getEmail(), 
 				alunoDTO.getNome(), objSenha);
 		return aluno;

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fateczl.engetec.dto.AlunoDTO;
 import br.com.fateczl.engetec.entity.Aluno;
+import br.com.fateczl.engetec.login.AlunoLogin;
 import br.com.fateczl.engetec.repository.AlunoRepository;
 import br.com.fateczl.engetec.service.AlunoService;
 import jakarta.validation.Valid;
@@ -83,6 +84,11 @@ public class AlunoController {
 	@PostMapping(path = "")
 	public ResponseEntity<?> cadastrar(@Valid @RequestBody AlunoDTO alunoDTO) {
 		return alunoService.cadastrar(alunoDTO);
+	}
+	
+	@PostMapping(path = "/login")
+	public ResponseEntity<?> logar(@Valid @RequestBody AlunoLogin alunoLogin) {
+		return alunoService.logar(alunoLogin);
 	}
 	
 	@PutMapping(path = "")

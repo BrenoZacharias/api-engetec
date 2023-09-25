@@ -5,7 +5,9 @@ import java.util.List;
 import br.com.fateczl.engetec.senha.Senha;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
@@ -21,8 +23,8 @@ public class Aluno {
 	private String email;
 	@Column(nullable = false)
 	private String nome;
-	@PrimaryKeyJoinColumn
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "senha_id")
 	private Senha senha;
 
 	public Aluno(Long ra, List<Artigo> artigos, String email, String nome, Senha senha) {
@@ -34,9 +36,8 @@ public class Aluno {
 		this.senha = senha;
 	}
 	
-	public Aluno() {
-		super();
-	}
+	@Deprecated
+	public Aluno() {} //sendo usado pelo hibernate
 
 	public Long getRa() {
 		return ra;

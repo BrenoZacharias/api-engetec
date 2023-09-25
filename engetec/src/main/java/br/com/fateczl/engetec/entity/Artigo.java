@@ -17,9 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@Data
-@NoArgsConstructor
 @Entity
 public class Artigo {
 	@Id
@@ -49,4 +46,104 @@ public class Artigo {
 	private String integrantes;
 	@OneToMany
 	private List<Avaliacao> avaliacoes;
+	
+	
+	@Deprecated
+	public Artigo() {} //sendo usado pelo hibernate
+
+	
+	
+	public Artigo(Long id, Aluno aluno, String titulo, String linkArtigoAluno, String linkArtigoComite,
+			List<Area> areas, String palavrasChave, Status status, String integrantes, List<Avaliacao> avaliacoes) {
+		super();
+		this.id = id;
+		this.aluno = aluno;
+		this.titulo = titulo;
+		this.linkArtigoAluno = linkArtigoAluno;
+		this.linkArtigoComite = linkArtigoComite;
+		this.areas = areas;
+		this.palavrasChave = palavrasChave;
+		this.status = status;
+		this.integrantes = integrantes;
+		this.avaliacoes = avaliacoes;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Aluno getAluno() {
+		return aluno;
+	}
+	
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
+	
+	public String getTitulo() {
+		return titulo;
+	}
+	
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	
+	public String getLinkArtigoAluno() {
+		return linkArtigoAluno;
+	}
+	
+	public void setLinkArtigoAluno(String linkArtigoAluno) {
+		this.linkArtigoAluno = linkArtigoAluno;
+	}
+	
+	public String getLinkArtigoComite() {
+		return linkArtigoComite;
+	}
+	
+	public void setLinkArtigoComite(String linkArtigoComite) {
+		this.linkArtigoComite = linkArtigoComite;
+	}
+	
+	public List<Area> getAreas() {
+		return areas;
+	}
+	
+	public void setAreas(List<Area> areas) {
+		this.areas = areas;
+	}
+	
+	public String getPalavrasChave() {
+		return palavrasChave;
+	}
+	
+	public void setPalavrasChave(String palavrasChave) {
+		this.palavrasChave = palavrasChave;
+	}
+	
+	public Status getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
+	public String getIntegrantes() {
+		return integrantes;
+	}
+	
+	public void setIntegrantes(String integrantes) {
+		this.integrantes = integrantes;
+	}
+	
+	public List<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
+	
+	public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
+	}
+	
+	
+	
 }

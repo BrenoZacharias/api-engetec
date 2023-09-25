@@ -1,11 +1,5 @@
 package br.com.fateczl.engetec.service;
 
-import java.util.List;
-
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-
-import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +7,12 @@ import org.springframework.stereotype.Service;
 
 import br.com.fateczl.engetec.dto.AlunoDTO;
 import br.com.fateczl.engetec.entity.Aluno;
-import br.com.fateczl.engetec.entity.Artigo;
 import br.com.fateczl.engetec.entity.Mensagem;
 import br.com.fateczl.engetec.login.AlunoLogin;
 import br.com.fateczl.engetec.repository.AlunoRepository;
 import br.com.fateczl.engetec.repository.SenhaRepository;
 import br.com.fateczl.engetec.senha.HashSenha;
 import br.com.fateczl.engetec.senha.Senha;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 @Service
 public class AlunoService {
@@ -59,7 +48,13 @@ public class AlunoService {
 	
 	//Método para cadastrar alunos 
 	public ResponseEntity<?> cadastrar(AlunoDTO alunoDTO) {
-		Senha objSenha = tratamentoSenha(alunoDTO.getSenha());
+		Senha objSenha = new Senha();
+		try {
+			objSenha = hashSenha.tratamentoSenha(alunoDTO.getSenha());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Aluno aluno = AlunoDtoToAluno(alunoDTO, objSenha);
 		if(aluno.getRa()==null){
 			mensagem.setMensagem("RA inválido");
@@ -105,33 +100,25 @@ public class AlunoService {
 	}
 	
 	// Método para remover registros
-		public ResponseEntity<?> remover(Long ra){
+	public ResponseEntity<?> remover(Long ra){
+		
+		if(alunoRepository.countByRa(ra) == 0) {
+			mensagem.setMensagem("O RA informado não existe.");
+			return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
+		}else {
+			Aluno aluno = alunoRepository.findByRa(ra);
+			alunoRepository.delete(aluno);
 			
-			if(alunoRepository.countByRa(ra) == 0) {
-				mensagem.setMensagem("O RA informado não existe.");
-				return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
-			}else {
-				Aluno aluno = alunoRepository.findByRa(ra);
-				alunoRepository.delete(aluno);
-				
-				mensagem.setMensagem("Pessoa removida com sucesso");
-				return new ResponseEntity<>(mensagem, HttpStatus.OK);
-			}
-			
+			mensagem.setMensagem("Pessoa removida com sucesso");
+			return new ResponseEntity<>(mensagem, HttpStatus.OK);
 		}
-	
+		
+	}
+
 	private Aluno AlunoDtoToAluno(AlunoDTO alunoDTO, Senha objSenha) {
 		Aluno aluno = new Aluno(alunoDTO.getRa(), alunoDTO.getArtigos(), alunoDTO.getEmail(), 
 				alunoDTO.getNome(), objSenha);
 		return aluno;
 	}
 		
-	//uma camada de segurança para a senha enviada pelo usuário
-	private Senha tratamentoSenha(String senha) {
-		byte[] salt = new byte[16];
-		salt = hashSenha.generateSalt();
-		String hashedSenha = hashSenha.hashPassword(senha, salt);
-		Senha objSenha = new Senha(hashedSenha, salt);
-		return objSenha;
-	}
 }

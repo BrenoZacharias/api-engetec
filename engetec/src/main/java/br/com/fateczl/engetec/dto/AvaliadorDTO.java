@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Positive;
 
 public class AvaliadorDTO {
 
-	@NotNull(message = "Informe um RA válido")
+	@NotNull(message = "Informe um número de matrícula válido")
 	@Positive
 	private Long matricula;
 	private List<Avaliacao> avaliacoes;

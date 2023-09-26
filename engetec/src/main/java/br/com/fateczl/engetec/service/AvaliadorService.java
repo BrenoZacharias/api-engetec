@@ -10,6 +10,7 @@ import br.com.fateczl.engetec.dto.AvaliadorDTO;
 import br.com.fateczl.engetec.entity.Aluno;
 import br.com.fateczl.engetec.entity.Avaliador;
 import br.com.fateczl.engetec.entity.Mensagem;
+import br.com.fateczl.engetec.repository.AlunoRepository;
 import br.com.fateczl.engetec.repository.AvaliadorRepository;
 import br.com.fateczl.engetec.repository.SenhaRepository;
 import br.com.fateczl.engetec.senha.HashSenha;
@@ -30,29 +31,29 @@ public class AvaliadorService {
 	@Autowired
 	private SenhaRepository senhaRepository;
 	
+	@Autowired
+	private AlunoService alunoService;
+	
 	public ResponseEntity<?> cadastrar(AvaliadorDTO avaliadorDTO) {
 		Senha objSenha = hashSenha.tratamentoSenha(avaliadorDTO.getSenha());
 		Avaliador avaliador = AvaliadorDtoToAvaliador(avaliadorDTO, objSenha);
-		if(aluno.getRa()==null){
-			mensagem.setMensagem("RA inválido");
-			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
-		} else if((aluno.getEmail()==null) || (aluno.getEmail().isBlank())){
-			mensagem.setMensagem("email inválido");
-			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
-		} else if(alunoRepository.countByEmail(aluno.getEmail())!=0){
+		if((avaliadorRepository.countByEmail(avaliador.getEmail())!=0)||(alunoService.countByEmail(avaliador.getEmail())!=0)){
 			mensagem.setMensagem("email já existe");
 			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
 		} else {
-			senhaRepository.save(aluno.getSenha());
-			return new ResponseEntity<>(alunoRepository.save(aluno), HttpStatus.CREATED);
+			senhaRepository.save(avaliador.getSenha());
+			return new ResponseEntity<>(avaliadorRepository.save(avaliador), HttpStatus.CREATED);
 		}
-		return null;
 	}
 
 	private Avaliador AvaliadorDtoToAvaliador(AvaliadorDTO avaliadorDTO, Senha objSenha) {
 		Avaliador avaliador = new Avaliador(avaliadorDTO.getMatricula(), avaliadorDTO.getAvaliacoes(), 
-				avaliadorDTO.getAreas(), avaliadorDTO.getEmail(), avaliadorDTO.getNome());
+				avaliadorDTO.getAreas(), avaliadorDTO.getEmail(), avaliadorDTO.getNome(), objSenha);
 		return avaliador;
+	}
+
+	public int countByEmail(String email) {
+		return avaliadorRepository.countByEmail(email);
 	}
 	
 }

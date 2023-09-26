@@ -10,9 +10,10 @@ import jakarta.validation.constraints.Positive;
 
 public class AlunoDTO {
 		@NotNull(message = "Informe um RA válido")
-		@Positive
+		@Positive(message = "Informe um RA válido")
 		private Long ra;
 		private List<Artigo> artigos;
+		@NotBlank(message = "Informe um e-mail válido")
 		@Email(message = "Informe um e-mail válido")
 		private String email;
 		@NotBlank(message = "Informe um nome válido")

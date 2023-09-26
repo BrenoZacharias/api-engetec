@@ -12,10 +12,11 @@ import jakarta.validation.constraints.Positive;
 public class AvaliadorDTO {
 
 	@NotNull(message = "Informe um número de matrícula válido")
-	@Positive
+	@Positive(message = "Informe um número de matrícula válido")
 	private Long matricula;
 	private List<Avaliacao> avaliacoes;
 	private List<Area> areas;
+	@NotBlank(message = "Informe um e-mail válido")
 	@Email(message = "Informe um e-mail válido")
 	private String email;
 	@NotBlank(message = "Informe um nome válido")

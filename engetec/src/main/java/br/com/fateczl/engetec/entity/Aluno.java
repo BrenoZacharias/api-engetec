@@ -36,6 +36,14 @@ public class Aluno {
 		this.senha = senha;
 	}
 	
+	public Aluno(Long ra, List<Artigo> artigos, String email, String nome) {
+		super();
+		this.ra = ra;
+		this.artigos = artigos;
+		this.email = email;
+		this.nome = nome;
+	}
+	
 	@Deprecated
 	public Aluno() {} //sendo usado pelo hibernate
 

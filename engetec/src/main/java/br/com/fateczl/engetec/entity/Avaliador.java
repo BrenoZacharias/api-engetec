@@ -5,9 +5,12 @@ import java.util.List;
 import br.com.fateczl.engetec.senha.Senha;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +27,8 @@ public class Avaliador {
 	private String email;
 	@Column(nullable = false)
 	private String nome;
-	@Column(nullable = false)
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "senha_id")
 	private Senha senha;
 	
 	public Avaliador() {
@@ -83,11 +87,11 @@ public class Avaliador {
 		this.nome = nome;
 	}
 	
-	public String getSenha() {
+	public Senha getSenha() {
 		return senha;
 	}
 	
-	public void setSenha(String senha) {
+	public void setSenha(Senha senha) {
 		this.senha = senha;
 	}
 }

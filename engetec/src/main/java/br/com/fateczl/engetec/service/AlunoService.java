@@ -23,6 +23,8 @@ public class AlunoService {
 	@Autowired
 	private AlunoRepository alunoRepository;
 	
+	private AvaliadorService avaliadorService;
+	
 	@Autowired
 	private HashSenha hashSenha;
 	
@@ -48,21 +50,9 @@ public class AlunoService {
 	
 	//Método para cadastrar alunos 
 	public ResponseEntity<?> cadastrar(AlunoDTO alunoDTO) {
-		Senha objSenha = new Senha();
-		try {
-			objSenha = hashSenha.tratamentoSenha(alunoDTO.getSenha());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Aluno aluno = AlunoDtoToAluno(alunoDTO, objSenha);
-		if(aluno.getRa()==null){
-			mensagem.setMensagem("RA inválido");
-			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
-		} else if((aluno.getEmail()==null) || (aluno.getEmail().isBlank())){
-			mensagem.setMensagem("email inválido");
-			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
-		} else if(alunoRepository.countByEmail(aluno.getEmail())!=0){
+		Senha objSenha = hashSenha.tratamentoSenha(alunoDTO.getSenha());
+		Aluno aluno = alunoDtoToAluno(alunoDTO, objSenha);
+		if((alunoRepository.countByEmail(aluno.getEmail())!=0)||(avaliadorService.countByEmail(aluno.getEmail())!=0)){
 			mensagem.setMensagem("email já existe");
 			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
 		} else {
@@ -88,8 +78,8 @@ public class AlunoService {
 	}
 	
 	// Método para editar dados
-	public ResponseEntity<?> editar(Aluno aluno){
-		
+	public ResponseEntity<?> editar(AlunoDTO alunoDTO){
+		Aluno aluno = alunoDtoToAluno(alunoDTO);
 		if(alunoRepository.countByRa(aluno.getRa()) == 0) {
 			mensagem.setMensagem("O RA informado não existe.");
 			return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
@@ -115,10 +105,22 @@ public class AlunoService {
 		
 	}
 
-	private Aluno AlunoDtoToAluno(AlunoDTO alunoDTO, Senha objSenha) {
+	public int countByEmail(String email) {
+		return alunoRepository.countByEmail(email);
+	}
+	
+	// para o post
+	private Aluno alunoDtoToAluno(AlunoDTO alunoDTO, Senha objSenha) {
 		Aluno aluno = new Aluno(alunoDTO.getRa(), alunoDTO.getArtigos(), alunoDTO.getEmail(), 
 				alunoDTO.getNome(), objSenha);
 		return aluno;
 	}
 		
+	// para o put
+	private Aluno alunoDtoToAluno(AlunoDTO alunoDTO) {
+		Aluno aluno = new Aluno(alunoDTO.getRa(), alunoDTO.getArtigos(), alunoDTO.getEmail(), 
+				alunoDTO.getNome());
+		return aluno;
+	}
+			
 }

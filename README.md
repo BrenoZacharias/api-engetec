@@ -11,4 +11,4 @@ Técnologias utilizadas: JAVA, Spring Boot Starter Web, MySQL, JPA e Hibernate
 *   Criações das variáveis de ambiente mapeadas no 'application.properties':
 *     "DB_USER" que representa o usuário do banco de dados
 *     "DB_PASSWORD" que representa a senha do usuário do banco de dados
-*     "DB_URL" que representa a url do banco do banco de dados e deve estar da seguinte maneira "jdbc:mysql://localhost:{PORT}/{DB_NAME}" (invés de '{PORT}' coloque o          número da porta e invés de '{DB_NAME}' coloque o nome do banco de dados
+*     "DB_URL" que representa a url do banco do banco de dados e deve estar da seguinte maneira "jdbc:mysql://localhost:{PORT}/{DB_NAME}" (invés de '{PORT}' coloque o número da porta e invés de '{DB_NAME}' coloque o nome do banco de dados

@@ -23,6 +23,7 @@ public class AlunoService {
 	@Autowired
 	private AlunoRepository alunoRepository;
 	
+	@Autowired
 	private AvaliadorService avaliadorService;
 	
 	@Autowired
@@ -111,14 +112,14 @@ public class AlunoService {
 	
 	// para o post
 	private Aluno alunoDtoToAluno(AlunoDTO alunoDTO, Senha objSenha) {
-		Aluno aluno = new Aluno(alunoDTO.getRa(), alunoDTO.getArtigos(), alunoDTO.getEmail(), 
+		Aluno aluno = new Aluno(Long.parseLong(alunoDTO.getRa()), alunoDTO.getEmail(), 
 				alunoDTO.getNome(), objSenha);
 		return aluno;
 	}
 		
 	// para o put
 	private Aluno alunoDtoToAluno(AlunoDTO alunoDTO) {
-		Aluno aluno = new Aluno(alunoDTO.getRa(), alunoDTO.getArtigos(), alunoDTO.getEmail(), 
+		Aluno aluno = new Aluno(Long.parseLong(alunoDTO.getRa()), alunoDTO.getEmail(), 
 				alunoDTO.getNome());
 		return aluno;
 	}

@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 public class Aluno {
@@ -27,19 +26,17 @@ public class Aluno {
 	@JoinColumn(name = "senha_id")
 	private Senha senha;
 
-	public Aluno(Long ra, List<Artigo> artigos, String email, String nome, Senha senha) {
+	public Aluno(Long ra, String email, String nome, Senha senha) {
 		super();
 		this.ra = ra;
-		this.artigos = artigos;
 		this.email = email;
 		this.nome = nome;
 		this.senha = senha;
 	}
 	
-	public Aluno(Long ra, List<Artigo> artigos, String email, String nome) {
+	public Aluno(Long ra, String email, String nome) {
 		super();
 		this.ra = ra;
-		this.artigos = artigos;
 		this.email = email;
 		this.nome = nome;
 	}

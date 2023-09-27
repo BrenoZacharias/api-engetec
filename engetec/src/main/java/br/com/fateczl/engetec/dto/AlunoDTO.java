@@ -11,8 +11,7 @@ import jakarta.validation.constraints.Positive;
 public class AlunoDTO {
 		@NotNull(message = "Informe um RA válido")
 		@Positive(message = "Informe um RA válido")
-		private Long ra;
-		private List<Artigo> artigos;
+		private String ra;
 		@NotBlank(message = "Informe um e-mail válido")
 		@Email(message = "Informe um e-mail válido")
 		private String email;
@@ -21,20 +20,12 @@ public class AlunoDTO {
 		@NotBlank(message = "Informe uma senha válida")
 		private String senha;
 
-		public Long getRa() {
+		public String getRa() {
 			return ra;
 		}
 
-		public void setRa(Long ra) {
+		public void setRa(String ra) {
 			this.ra = ra;
-		}
-
-		public List<Artigo> getArtigos() {
-			return artigos;
-		}
-
-		public void setArtigos(List<Artigo> artigos) {
-			this.artigos = artigos;
 		}
 
 		public String getEmail() {
@@ -63,7 +54,7 @@ public class AlunoDTO {
 
 		@Override
 		public String toString() {
-			return "Aluno [ra=" + ra + ", artigos=" + artigos + ", email=" + email + ", nome=" + nome + ", senha=" + senha
+			return "Aluno [ra=" + ra + ", email=" + email + ", nome=" + nome + ", senha=" + senha
 					+ "]";
 		}
 

@@ -1,8 +1,5 @@
 package br.com.fateczl.engetec.dto;
 
-import java.util.List;
-
-import br.com.fateczl.engetec.entity.Artigo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +8,7 @@ import jakarta.validation.constraints.Positive;
 public class AlunoDTO {
 		@NotNull(message = "Informe um RA válido")
 		@Positive(message = "Informe um RA válido")
-		private String ra;
+		private Long ra;
 		@NotBlank(message = "Informe um e-mail válido")
 		@Email(message = "Informe um e-mail válido")
 		private String email;
@@ -20,11 +17,11 @@ public class AlunoDTO {
 		@NotBlank(message = "Informe uma senha válida")
 		private String senha;
 
-		public String getRa() {
+		public Long getRa() {
 			return ra;
 		}
 
-		public void setRa(String ra) {
+		public void setRa(Long ra) {
 			this.ra = ra;
 		}
 

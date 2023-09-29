@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.fateczl.engetec.dto.AlunoDTO;
 import br.com.fateczl.engetec.entity.Aluno;
 import br.com.fateczl.engetec.entity.Mensagem;
+import br.com.fateczl.engetec.entity.Usuario;
 import br.com.fateczl.engetec.login.AlunoLogin;
 import br.com.fateczl.engetec.repository.AlunoRepository;
 import br.com.fateczl.engetec.repository.SenhaRepository;
@@ -21,43 +22,44 @@ public class AlunoService {
 	private Mensagem mensagem;
 	
 	@Autowired
-	private AlunoRepository alunoRepository;
-	
-	@Autowired
-	private AvaliadorService avaliadorService;
-	
-	@Autowired
 	private HashSenha hashSenha;
 	
 	@Autowired
-	private SenhaRepository senhaRepository;
+	private AlunoRepository alunoRepository;
 	
-	public ResponseEntity<?> logar(AlunoLogin alunoLogin){
-		if(alunoRepository.countByRa(alunoLogin.getRa())==0) {
-			mensagem.setMensagem("email não existe");
-			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
-		} else {
-			Aluno aluno = alunoRepository.findByRa(alunoLogin.getRa());
-			if(!HashSenha.verifyPassword(alunoLogin.getSenha(), aluno.getSenha().getHashSenha(), 
-					aluno.getSenha().getSalt())){
-				mensagem.setMensagem("senha incorreta");
-				return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
-			} else {
-				mensagem.setMensagem("logado");
-				return new ResponseEntity<>(mensagem, HttpStatus.OK);
-			}
-		}
-	}
+	@Autowired
+	private UsuarioService usuarioService;
+	
+//	public ResponseEntity<?> logar(AlunoLogin alunoLogin){
+//		if(alunoRepository.countByRa(alunoLogin.getRa())==0) {
+//			mensagem.setMensagem("email não existe");
+//			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
+//		} else {
+//			Aluno aluno = alunoRepository.findByRa(alunoLogin.getRa());
+//			if(!HashSenha.verifyPassword(alunoLogin.getSenha(), aluno.getSenha().getHashSenha(), 
+//					aluno.getSenha().getSalt())){
+//				mensagem.setMensagem("senha incorreta");
+//				return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
+//			} else {
+//				mensagem.setMensagem("logado");
+//				return new ResponseEntity<>(mensagem, HttpStatus.OK);
+//			}
+//		}
+//	}
 	
 	//Método para cadastrar alunos 
 	public ResponseEntity<?> cadastrar(AlunoDTO alunoDTO) {
-		Senha objSenha = hashSenha.tratamentoSenha(alunoDTO.getSenha());
-		Aluno aluno = alunoDtoToAluno(alunoDTO, objSenha);
-		if((alunoRepository.countByEmail(aluno.getEmail())!=0)||(avaliadorService.countByEmail(aluno.getEmail())!=0)){
+		if(usuarioService.countByEmail(alunoDTO.getEmail())!=0){
 			mensagem.setMensagem("email já existe");
 			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
+		} else if(alunoRepository.countByRa(alunoDTO.getRa())!=0){
+			mensagem.setMensagem("RA já existe");
+			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
 		} else {
-			senhaRepository.save(aluno.getSenha());
+			Usuario usuario = alunoDtoToUsuario(alunoDTO);
+			Usuario usuarioSalvo = usuarioService.cadastrar(usuario, alunoDTO.getSenha());
+			Aluno aluno = alunoDtoToAluno(alunoDTO);
+			aluno.setUsuario(usuarioSalvo);
 			return new ResponseEntity<>(alunoRepository.save(aluno), HttpStatus.CREATED);
 		}
 	}
@@ -78,17 +80,28 @@ public class AlunoService {
 		}
 	}
 	
-	// Método para editar dados
-	public ResponseEntity<?> editar(AlunoDTO alunoDTO){
-		Aluno aluno = alunoDtoToAluno(alunoDTO);
-		if(alunoRepository.countByRa(aluno.getRa()) == 0) {
-			mensagem.setMensagem("O RA informado não existe.");
-			return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
-		}else {
-			return new ResponseEntity<>(alunoRepository.save(aluno), HttpStatus.OK);
-		}
-		
-	}
+//	// Método para editar dados
+//	public ResponseEntity<?> editar(AlunoDTO alunoDTO){
+//		if(alunoRepository.countByRa(alunoDTO.getRa()) == 0) {
+//			mensagem.setMensagem("O RA informado não existe.");
+//			return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
+//		} else {
+//			Aluno alunoNew = alunoDtoToAluno(alunoDTO);
+//			Usuario usuarioNew = alunoDtoToUsuario(alunoDTO);
+//			alunoNew.setUsuario(usuarioNew);
+//			
+//			Aluno alunoOld = findByRa(alunoDTO.getRa());
+//			
+//			if(usuarioService.countByEmail(alunoDTO.getEmail())!=0){
+//			mensagem.setMensagem("email já existe");
+//			return new ResponseEntity<>(mensagem, HttpStatus.BAD_REQUEST);
+//			return new ResponseEntity<>(alunoRepository.save(aluno), HttpStatus.OK);
+//			}
+//		}
+//		
+//	}
+	
+	
 	
 	// Método para remover registros
 	public ResponseEntity<?> remover(Long ra){
@@ -97,7 +110,7 @@ public class AlunoService {
 			mensagem.setMensagem("O RA informado não existe.");
 			return new ResponseEntity<>(mensagem, HttpStatus.NOT_FOUND);
 		}else {
-			Aluno aluno = alunoRepository.findByRa(ra);
+			Aluno aluno = findByRa(ra);
 			alunoRepository.delete(aluno);
 			
 			mensagem.setMensagem("Pessoa removida com sucesso");
@@ -106,22 +119,25 @@ public class AlunoService {
 		
 	}
 
-	public int countByEmail(String email) {
-		return alunoRepository.countByEmail(email);
+	public Aluno findByRa(Long ra) {
+		return alunoRepository.findByRa(ra);
 	}
 	
 	// para o post
-	private Aluno alunoDtoToAluno(AlunoDTO alunoDTO, Senha objSenha) {
-		Aluno aluno = new Aluno(Long.parseLong(alunoDTO.getRa()), alunoDTO.getEmail(), 
-				alunoDTO.getNome(), objSenha);
+	private Aluno alunoDtoToAluno(AlunoDTO alunoDTO) {
+		Aluno aluno = new Aluno(alunoDTO.getRa());
 		return aluno;
 	}
 		
-	// para o put
-	private Aluno alunoDtoToAluno(AlunoDTO alunoDTO) {
-		Aluno aluno = new Aluno(Long.parseLong(alunoDTO.getRa()), alunoDTO.getEmail(), 
-				alunoDTO.getNome());
-		return aluno;
+	private Usuario alunoDtoToUsuario(AlunoDTO alunoDTO) {
+		Usuario usuario = new Usuario(alunoDTO.getEmail(), alunoDTO.getNome());
+		return usuario;
 	}
+	// para o put
+//	private Aluno alunoDtoToAluno(AlunoDTO alunoDTO) {
+//		Aluno aluno = new Aluno(Long.parseLong(alunoDTO.getRa()), alunoDTO.getEmail(), 
+//				alunoDTO.getNome());
+//		return aluno;
+//	}
 			
 }

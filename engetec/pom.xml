@@ -20,6 +20,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
      </dependency>
      
+     <dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-devtools</artifactId>
+	    <scope>runtime</scope>
+	</dependency>
+
      <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 	<dependency>
 	    <groupId>org.projectlombok</groupId>
@@ -80,12 +86,13 @@
 		    <artifactId>hibernate-core</artifactId>
 		    <version>5.5.6.Final</version>
 		</dependency>
-		-->
-        <dependency>
+		https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+		<dependency>
 		    <groupId>org.hibernate.validator</groupId>
 		    <artifactId>hibernate-validator</artifactId>
-		    <version>8.0.0.Final</version> <!-- Use a versão mais recente disponível -->
+		    <version>8.0.1.Final</version>
 		</dependency>
+
         
         <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 		<dependency>

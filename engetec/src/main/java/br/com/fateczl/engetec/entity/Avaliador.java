@@ -23,28 +23,19 @@ public class Avaliador {
 	private List<Avaliacao> avaliacoes;
 	@ManyToMany(mappedBy = "avaliadores")
 	private List<Area> areas;
-	@Column(unique = true, nullable = false)
-	private String email;
-	@Column(nullable = false)
-	private String nome;
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "senha_id")
-	private Senha senha;
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 	
 	public Avaliador() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Avaliador(Long matricula, List<Avaliacao> avaliacoes, List<Area> areas, String email, String nome,
-			Senha senha) {
-		super();
+	public Avaliador(Long matricula, List<Avaliacao> avaliacoes, List<Area> areas) {
 		this.matricula = matricula;
 		this.avaliacoes = avaliacoes;
 		this.areas = areas;
-		this.email = email;
-		this.nome = nome;
-		this.senha = senha;
 	}
 
 	public Long getMatricula() {
@@ -70,28 +61,14 @@ public class Avaliador {
 	public void setAreas(List<Area> areas) {
 		this.areas = areas;
 	}
-	
-	public String getEmail() {
-		return email;
+
+	public Usuario getUsuario() {
+		return usuario;
 	}
-	
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
+
 	
-	public String getNome() {
-		return nome;
-	}
-	
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	
-	public Senha getSenha() {
-		return senha;
-	}
-	
-	public void setSenha(Senha senha) {
-		this.senha = senha;
-	}
 }

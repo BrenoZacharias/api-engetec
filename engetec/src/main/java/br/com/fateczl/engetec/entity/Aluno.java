@@ -3,7 +3,7 @@ package br.com.fateczl.engetec.entity;
 import java.util.List;
 
 import br.com.fateczl.engetec.senha.Senha;
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -18,27 +18,17 @@ public class Aluno {
 	private Long ra;
 	@OneToMany(mappedBy = "aluno")
 	private List<Artigo> artigos;
-	@Column(unique = true, nullable = false)
-	private String email;
-	@Column(nullable = false)
-	private String nome;
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "senha_id")
-	private Senha senha;
-
-	public Aluno(Long ra, String email, String nome, Senha senha) {
-		super();
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
+	
+	public Aluno(Long ra) {
 		this.ra = ra;
-		this.email = email;
-		this.nome = nome;
-		this.senha = senha;
 	}
 	
-	public Aluno(Long ra, String email, String nome) {
-		super();
+	public Aluno(Long ra, Usuario usuario) {
 		this.ra = ra;
-		this.email = email;
-		this.nome = nome;
+		this.usuario = usuario;
 	}
 	
 	@Deprecated
@@ -60,28 +50,13 @@ public class Aluno {
 		this.artigos = artigos;
 	}
 
-	public String getEmail() {
-		return email;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public Senha getSenha() {
-		return senha;
-	}
-
-	public void setSenha(Senha senha) {
-		this.senha = senha;
-	}
-
+	
 }

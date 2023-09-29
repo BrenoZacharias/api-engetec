@@ -18,8 +18,8 @@ public class AvaliadorController {
 	@Autowired
 	private AvaliadorService avaliadorService;
 	
-	@PostMapping(path="")
-	public ResponseEntity<?> cadastrar(@Valid @RequestBody AvaliadorDTO avaliadorDTO){
-		return avaliadorService.cadastrar(avaliadorDTO);
-	}
+//	@PostMapping(path="")
+//	public ResponseEntity<?> cadastrar(@Valid @RequestBody AvaliadorDTO avaliadorDTO){
+//		return avaliadorService.cadastrar(avaliadorDTO);
+//	}
 }
